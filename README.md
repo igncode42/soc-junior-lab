@@ -6,6 +6,22 @@ El proyecto utiliza exclusivamente escenarios y datos simulados con fines educat
 
 ---
 
+## Navegación rápida
+
+| Área | Recurso |
+|---|---|
+| 🐍 Analizador principal | [`scripts/soc_log_analyzer.py`](scripts/soc_log_analyzer.py) |
+| 🐍 Baseline Python | [`scripts/detectar_login_fallidos.py`](scripts/detectar_login_fallidos.py) |
+| 📄 Log sintético | [`logs/auth_sample.log`](logs/auth_sample.log) |
+| 📊 Reporte automático | [`reports/soc-analysis-report.md`](reports/soc-analysis-report.md) |
+| 🔐 Caso SSH | [`cases/02-fuerza-bruta-ssh.md`](cases/02-fuerza-bruta-ssh.md) |
+| 🎣 Caso Phishing | [`cases/01-phishing.md`](cases/01-phishing.md) |
+| 📘 Runbook SSH | [`docs/03-runbook-analisis-alerta.md`](docs/03-runbook-analisis-alerta.md) |
+| 📘 Runbook Phishing | [`docs/04-runbook-phishing.md`](docs/04-runbook-phishing.md) |
+| 📚 Glosario SOC | [`docs/02-glosario-soc-junior.md`](docs/02-glosario-soc-junior.md) |
+
+---
+
 ## Objetivo
 
 Aplicar un flujo básico y reproducible de análisis defensivo:
@@ -69,11 +85,11 @@ Se revisan:
 - riesgo potencial;
 - acciones recomendadas.
 
-Archivos relacionados:
+### Archivos relacionados
 
-- `cases/01-phishing.md`
-- `reports/reporte-phishing.md`
-- `docs/04-runbook-phishing.md`
+- 📄 [Caso completo de phishing](cases/01-phishing.md)
+- 📊 [Reporte técnico de phishing](reports/reporte-phishing.md)
+- 📘 [Runbook de respuesta ante phishing](docs/04-runbook-phishing.md)
 
 ---
 
@@ -89,12 +105,12 @@ Análisis de logs simulados de autenticación SSH para identificar:
 - autenticaciones exitosas posteriores a múltiples fallos;
 - posibles señales de compromiso.
 
-Archivos relacionados:
+### Archivos relacionados
 
-- `logs/auth_sample.log`
-- `cases/02-fuerza-bruta-ssh.md`
-- `reports/reporte-fuerza-bruta-ssh.md`
-- `docs/03-runbook-analisis-alerta.md`
+- 📄 [Dataset sintético `auth_sample.log`](logs/auth_sample.log)
+- 🔐 [Caso completo de fuerza bruta SSH](cases/02-fuerza-bruta-ssh.md)
+- 📊 [Reporte técnico de fuerza bruta SSH](reports/reporte-fuerza-bruta-ssh.md)
+- 📘 [Runbook de análisis de alerta SSH](docs/03-runbook-analisis-alerta.md)
 
 ---
 
@@ -104,7 +120,7 @@ El proyecto contiene dos niveles de automatización.
 
 ## 1. Baseline
 
-### `scripts/detectar_login_fallidos.py`
+### [`scripts/detectar_login_fallidos.py`](scripts/detectar_login_fallidos.py)
 
 Primera capa de análisis automatizado.
 
@@ -133,11 +149,13 @@ severidad
 
 Esta versión funciona como baseline y no intenta confirmar posibles compromisos.
 
+➡️ [Ver código del baseline](scripts/detectar_login_fallidos.py)
+
 ---
 
 ## 2. Analizador principal
 
-### `scripts/soc_log_analyzer.py`
+### [`scripts/soc_log_analyzer.py`](scripts/soc_log_analyzer.py)
 
 Versión principal del laboratorio.
 
@@ -171,6 +189,10 @@ posible compromiso
 
 Esto evita asociar un login exitoso con intentos fallidos dirigidos a una cuenta diferente.
 
+➡️ [Ver código del analizador principal](scripts/soc_log_analyzer.py)
+
+➡️ [Ver reporte generado por el analizador](reports/soc-analysis-report.md)
+
 ---
 
 # Política de severidad
@@ -190,6 +212,8 @@ Con el umbral predeterminado de `3`:
 La severidad se utiliza para priorizar el análisis.
 
 Una detección de posible compromiso no representa por sí sola la confirmación de un acceso no autorizado.
+
+➡️ [Ver documentación sobre evento, alerta e incidente](docs/01-evento-alerta-incidente.md)
 
 ---
 
@@ -217,6 +241,11 @@ evidencia suficiente de compromiso o impacto
 
 La clasificación puede cambiar a medida que aparece nueva evidencia.
 
+Para profundizar:
+
+- 📘 [Evento, alerta e incidente](docs/01-evento-alerta-incidente.md)
+- 📚 [Glosario SOC Junior](docs/02-glosario-soc-junior.md)
+
 ---
 
 # Ejecución
@@ -224,6 +253,12 @@ La clasificación puede cambiar a medida que aparece nueva evidencia.
 Desde la raíz del proyecto.
 
 ## Baseline
+
+```powershell
+py scripts/detectar_login_fallidos.py
+```
+
+También puede utilizarse:
 
 ```powershell
 python scripts/detectar_login_fallidos.py
@@ -234,24 +269,34 @@ python scripts/detectar_login_fallidos.py
 ## Analizador principal
 
 ```powershell
+py scripts/soc_log_analyzer.py logs/auth_sample.log
+```
+
+O:
+
+```powershell
 python scripts/soc_log_analyzer.py logs/auth_sample.log
 ```
 
 También puede configurarse explícitamente el umbral y el archivo de reporte:
 
 ```powershell
-python scripts/soc_log_analyzer.py logs/auth_sample.log --threshold 3 --report reports/soc-analysis-report.md
+py scripts/soc_log_analyzer.py logs/auth_sample.log --threshold 3 --report reports/soc-analysis-report.md
 ```
+
+Archivos utilizados:
+
+- [Dataset `logs/auth_sample.log`](logs/auth_sample.log)
+- [Analizador `scripts/soc_log_analyzer.py`](scripts/soc_log_analyzer.py)
+- [Reporte `reports/soc-analysis-report.md`](reports/soc-analysis-report.md)
 
 ---
 
 # Resultado esperado
 
-Utilizando:
+Utilizando el dataset:
 
-```text
-logs/auth_sample.log
-```
+[`logs/auth_sample.log`](logs/auth_sample.log)
 
 con:
 
@@ -272,6 +317,8 @@ Alertas priorizadas: 3
 Posibles compromisos: 1
 Riesgo general estimado: ALTO
 ```
+
+➡️ [Ver reporte completo generado](reports/soc-analysis-report.md)
 
 ---
 
@@ -317,15 +364,20 @@ severidad Alta
 
 La correlación requiere investigación adicional y no confirma automáticamente un compromiso.
 
+### Evidencia relacionada
+
+- [Ver log utilizado](logs/auth_sample.log)
+- [Ver análisis manual SSH](cases/02-fuerza-bruta-ssh.md)
+- [Ver reporte manual SSH](reports/reporte-fuerza-bruta-ssh.md)
+- [Ver reporte automático](reports/soc-analysis-report.md)
+
 ---
 
 # Reporte automático
 
 El analizador genera:
 
-```text
-reports/soc-analysis-report.md
-```
+[`reports/soc-analysis-report.md`](reports/soc-analysis-report.md)
 
 El reporte contiene:
 
@@ -339,6 +391,8 @@ El reporte contiene:
 - recomendaciones operativas;
 - limitaciones;
 - conclusión.
+
+➡️ [Abrir reporte automático](reports/soc-analysis-report.md)
 
 ---
 
@@ -380,14 +434,18 @@ soc-junior-lab/
 
 | Archivo | Propósito |
 |---|---|
-| `docs/01-evento-alerta-incidente.md` | Diferencia entre evento, alerta, posible incidente e incidente confirmado |
-| `docs/02-glosario-soc-junior.md` | Conceptos fundamentales utilizados en el laboratorio |
-| `docs/03-runbook-analisis-alerta.md` | Procedimiento de análisis de autenticación SSH |
-| `docs/04-runbook-phishing.md` | Procedimiento inicial de respuesta ante phishing |
-| `reports/reporte-fuerza-bruta-ssh.md` | Reporte manual del escenario SSH |
-| `reports/reporte-phishing.md` | Reporte manual del escenario de phishing |
-| `reports/reporte-template.md` | Plantilla reutilizable para documentación |
-| `reports/soc-analysis-report.md` | Reporte generado automáticamente por Python |
+| [`docs/01-evento-alerta-incidente.md`](docs/01-evento-alerta-incidente.md) | Diferencia entre evento, alerta, posible incidente e incidente confirmado |
+| [`docs/02-glosario-soc-junior.md`](docs/02-glosario-soc-junior.md) | Conceptos fundamentales utilizados en el laboratorio |
+| [`docs/03-runbook-analisis-alerta.md`](docs/03-runbook-analisis-alerta.md) | Procedimiento de análisis de autenticación SSH |
+| [`docs/04-runbook-phishing.md`](docs/04-runbook-phishing.md) | Procedimiento inicial de respuesta ante phishing |
+| [`cases/01-phishing.md`](cases/01-phishing.md) | Caso práctico de análisis de phishing |
+| [`cases/02-fuerza-bruta-ssh.md`](cases/02-fuerza-bruta-ssh.md) | Caso práctico de autenticación SSH |
+| [`reports/reporte-fuerza-bruta-ssh.md`](reports/reporte-fuerza-bruta-ssh.md) | Reporte manual del escenario SSH |
+| [`reports/reporte-phishing.md`](reports/reporte-phishing.md) | Reporte manual del escenario de phishing |
+| [`reports/reporte-template.md`](reports/reporte-template.md) | Plantilla reutilizable para documentación |
+| [`reports/soc-analysis-report.md`](reports/soc-analysis-report.md) | Reporte generado automáticamente por Python |
+| [`scripts/detectar_login_fallidos.py`](scripts/detectar_login_fallidos.py) | Baseline de análisis automatizado |
+| [`scripts/soc_log_analyzer.py`](scripts/soc_log_analyzer.py) | Analizador principal del laboratorio |
 
 ---
 
@@ -452,13 +510,7 @@ No deben publicarse:
 - información personal;
 - evidencia sin sanitizar.
 
-El archivo:
-
-```text
-logs/auth_sample.log
-```
-
-es un dataset sintético incluido deliberadamente para permitir la reproducción del análisis.
+El archivo [`logs/auth_sample.log`](logs/auth_sample.log) es un dataset sintético incluido deliberadamente para permitir la reproducción del análisis.
 
 ---
 
@@ -495,3 +547,13 @@ Posibles extensiones futuras podrían incluir integración con un SIEM, nuevas f
 SOC Junior Lab reúne análisis manual, automatización con Python y documentación técnica aplicada a escenarios simulados de autenticación SSH y phishing.
 
 El objetivo es construir una base práctica y defendible de operaciones de seguridad, demostrando la capacidad de transformar evidencia técnica en hallazgos estructurados y documentados.
+
+### Explorar el laboratorio
+
+- 🐍 [Analizador principal](scripts/soc_log_analyzer.py)
+- 📊 [Reporte automático](reports/soc-analysis-report.md)
+- 🔐 [Caso SSH](cases/02-fuerza-bruta-ssh.md)
+- 🎣 [Caso Phishing](cases/01-phishing.md)
+- 📘 [Runbook SSH](docs/03-runbook-analisis-alerta.md)
+- 📘 [Runbook Phishing](docs/04-runbook-phishing.md)
+- 📚 [Glosario SOC](docs/02-glosario-soc-junior.md)
