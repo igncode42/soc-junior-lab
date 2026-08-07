@@ -1,0 +1,64 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# Variables de entorno y configuración sensible
+.env
+.env.*
+!.env.example
+
+# Editores
+.vscode/
+.idea/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos temporales
+*.tmp
+*.bak
+*.swp
+
+# Logs
+# Por defecto no publicar logs reales
+*.log
+
+# Excepción: dataset sintético del laboratorio
+!logs/auth_sample.log
+
+# Evidencia privada o sin sanitizar
+private/
+.private/
+raw/
+evidence/raw/
+artifacts/raw/
+
+# Capturas y evidencia técnica
+*.evtx
+*.pcap
+*.pcapng
+
+# Claves y certificados privados
+*.pem
+*.key
+*.pfx
+*.p12
+id_rsa
+id_ed25519
+
+# Carpetas potencialmente sensibles
+secrets/
+credentials/
+
+# Cobertura / caché de pruebas
+.pytest_cache/
+.coverage
+htmlcov/
